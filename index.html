@@ -1,94 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Mystery Awaits</title>
-    <style>
-        body {
-            background-color: #0b0b0b;
-            color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <title>The Secret Reveals Soon…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        #timer {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 20px 0;
-        }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #111 0%, #000 70%);
+      color: #f5f5f5;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
 
-        /* Styling for the link/button that appears at the end */
-        #reveal-link {
-            display: none; /* Hidden until timer ends */
-            padding: 15px 30px;
-            background-color: #ffffff;
-            color: #0b0b0b;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
+    .container {
+      max-width: 600px;
+      padding: 40px;
+    }
 
-        #reveal-link:hover {
-            background-color: #ffd700; /* Gold glow on hover */
-            box-shadow: 0 0 20px #ffd700;
-        }
+    h1 {
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
 
-        .pulse {
-            animation: pulse-animation 2s infinite;
-        }
+    .subtitle {
+      opacity: 0.7;
+      margin-bottom: 40px;
+    }
 
-        @keyframes pulse-animation {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-    </style>
+    #countdown {
+      font-size: 2rem;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+    }
+
+    #reveal {
+      display: none;
+      margin-top: 30px;
+    }
+
+    a.secret-link {
+      display: inline-block;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, #ffcc70, #ff8c00);
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      font-weight: bold;
+      box-shadow: 0 0 30px rgba(255, 165, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    a.secret-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 45px rgba(255, 165, 0, 0.7);
+    }
+
+    .glow {
+      animation: glowPulse 2s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+      to { text-shadow: 0 0 30px rgba(255,255,255,0.6); }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <h1 class="glow">THE MOMENT AWAITS</h1>
+    <div class="subtitle">A secret unlocks at exactly midnight…</div>
 
-    <h1 id="headline" class="pulse">THE REVEAL HAPPENS IN...</h1>
-    
-    <div id="timer">00:00:00:00</div>
+    <div id="countdown">Loading…</div>
 
-    <a href="https://peanut-butter8.github.io/Happy-Birthday/" id="reveal-link">Open Your Surprise</a>
+    <div id="reveal">
+      <h2>✨ It’s Time ✨</h2>
+      <a
+        class="secret-link"
+        href="https://peanut-butter8.github.io/Happy-Birthday/"
+        target="_blank"
+      >
+        Reveal the Secret 🎁
+      </a>
+    </div>
+  </div>
 
-    <script>
-        // 1. SET YOUR DATE HERE (Make sure this is in the FUTURE)
-        const targetDate = new Date("January 1, 2026 00:00:00").getTime();
+  <script>
+    /*
+      Target time:
+      30 Dec 2025, 12:00 AM IST
+      IST = UTC + 5:30
+      So UTC time = 29 Dec 2025, 18:30 UTC
+    */
 
-        const countdown = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+    const revealTimeUTC = new Date(Date.UTC(2025, 11, 29, 18, 30, 0));
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const countdownEl = document.getElementById("countdown");
+    const revealEl = document.getElementById("reveal");
 
-            // Display the timer
-            document.getElementById("timer").innerHTML = 
-                (days < 10 ? "0" + days : days) + ":" + 
-                (hours < 10 ? "0" + hours : hours) + ":" + 
-                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-                (seconds < 10 ? "0" + seconds : seconds);
+    function updateCountdown() {
+      const now = new Date();
+      const diff = revealTimeUTC - now;
 
-            // 2. ACTION WHEN TIMER ENDS
-            if (distance < 0) {
-                clearInterval(countdown);
-                document.getElementById("timer").style.display = "none";
-                document.getElementById("headline").innerHTML = "IT IS TIME";
-                document.getElementById("reveal-link").style.display = "inline-block";
-            }
-        }, 1000);
-    </script>
+      if (diff <= 0) {
+        countdownEl.style.display = "none";
+        revealEl.style.display = "block";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.textContent =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 </body>
 </html>
