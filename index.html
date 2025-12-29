@@ -1,9 +1,9 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Something is Coming...</title>
+    <title>The Mystery Awaits</title>
     <style>
         body {
             background-color: #0b0b0b;
@@ -15,30 +15,33 @@ f<!DOCTYPE html>
             justify-content: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
-        }
-
-        h1 {
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            font-size: 1.5rem;
-            opacity: 0.7;
-            margin-bottom: 20px;
         }
 
         #timer {
             font-size: 4rem;
             font-weight: bold;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin: 20px 0;
         }
 
-        .hint {
-            margin-top: 30px;
-            font-style: italic;
-            color: #555;
+        /* Styling for the link/button that appears at the end */
+        #reveal-link {
+            display: none; /* Hidden until timer ends */
+            padding: 15px 30px;
+            background-color: #ffffff;
+            color: #0b0b0b;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        /* Simple pulse effect */
+        #reveal-link:hover {
+            background-color: #ffd700; /* Gold glow on hover */
+            box-shadow: 0 0 20px #ffd700;
+        }
+
         .pulse {
             animation: pulse-animation 2s infinite;
         }
@@ -52,41 +55,40 @@ f<!DOCTYPE html>
 </head>
 <body>
 
-    <h1 class="pulse">The reveal happens in...</h1>
+    <h1 id="headline" class="pulse">THE REVEAL HAPPENS IN...</h1>
+    
     <div id="timer">00:00:00:00</div>
-    <p class="hint">Wait for the clock to strike zero.</p>
+
+    <a href="https://peanut-butter8.github.io/Happy-Birthday/" id="reveal-link">Open Your Surprise</a>
 
     <script>
-        // SET YOUR DATE HERE
-        // Format: "Month Day, Year Hours:Minutes:Seconds"
-        const targetDate = new Date("December 29, 2025 17:33:00").getTime();
-        const redirectUrl = "https://peanut-butter8.github.io/Happy-Birthday/";
+        // 1. SET YOUR DATE HERE (Make sure this is in the FUTURE)
+        const targetDate = new Date("January 1, 2026 00:00:00").getTime();
 
         const countdown = setInterval(function() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            // Calculations for days, hours, minutes and seconds
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Output the result in the element with id="timer"
+            // Display the timer
             document.getElementById("timer").innerHTML = 
                 (days < 10 ? "0" + days : days) + ":" + 
                 (hours < 10 ? "0" + hours : hours) + ":" + 
                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
                 (seconds < 10 ? "0" + seconds : seconds);
 
-            // If the countdown is finished, redirect
+            // 2. ACTION WHEN TIMER ENDS
             if (distance < 0) {
                 clearInterval(countdown);
-                window.location.href = redirectUrl;
+                document.getElementById("timer").style.display = "none";
+                document.getElementById("headline").innerHTML = "IT IS TIME";
+                document.getElementById("reveal-link").style.display = "inline-block";
             }
         }, 1000);
     </script>
 </body>
-
 </html>
-
