@@ -59,7 +59,7 @@
     <script>
         // SET YOUR DATE HERE
         // Format: "Month Day, Year Hours:Minutes:Seconds"
-        const targetDate = new Date("January 1, 2026 00:00:00").getTime();
+        const targetDate = new Date("December 29, 2025 17:25:00").getTime();
         const redirectUrl = "https://peanut-butter8.github.io/Happy-Birthday/";
 
         const countdown = setInterval(function() {
